@@ -51,9 +51,9 @@ func (b *BufferHTML) FlushAtEnd(w http.ResponseWriter, Prefix string, Postfix st
 			h[key] = val
 		}
 	}
-	w.Header().Set("Content-Length", fmt.Sprintf("%d", l+2))
 	// ------------------------------------------- prefix / postfix --------------------------------
 	s = []byte(Prefix + string(s) + Postfix)
+	w.Header().Set("Content-Length", fmt.Sprintf("%d", len(s)))
 	fmt.Printf("Headers: %+v\n", h)
 	if b.StatusCode > 0 {
 		w.WriteHeader(b.StatusCode)
