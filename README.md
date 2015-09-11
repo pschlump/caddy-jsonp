@@ -77,7 +77,7 @@ You can now fetch www/status.json in a JSONP format with
 
 ``` sh
 
-	$ wget -o aa.out -O bb.out 'https://localhost/api/status?callback=callback11212121'
+	$ wget --no-check-certificate -o aa.out -O bb.out 'https://localhost/api/status?callback=callback11212121'
 
 ```
 
