@@ -34,12 +34,12 @@ func (jph JsonPHandlerType) ServeHTTP(www http.ResponseWriter, req *http.Request
 				Postfix := ""
 				u, err := url.ParseRequestURI(req.RequestURI)
 				if err != nil {
-					ResponseBodyRecorder.FlushAtEnd(www, "/*1*/", "")
+					ResponseBodyRecorder.FlushAtEnd(www, "", "")
 					return status, nil
 				}
 				m, err := url.ParseQuery(u.RawQuery)
 				if err != nil {
-					ResponseBodyRecorder.FlushAtEnd(www, "/*2*/", "")
+					ResponseBodyRecorder.FlushAtEnd(www, "", "")
 					return status, nil
 				}
 				callback := m.Get("callback")
@@ -50,7 +50,7 @@ func (jph JsonPHandlerType) ServeHTTP(www http.ResponseWriter, req *http.Request
 				}
 				ResponseBodyRecorder.FlushAtEnd(www, Prefix, Postfix)
 			} else {
-				ResponseBodyRecorder.FlushAtEnd(www, "/*3*/", "")
+				ResponseBodyRecorder.FlushAtEnd(www, "", "")
 			}
 			return status, err
 		}
