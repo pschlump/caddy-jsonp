@@ -22,7 +22,7 @@ I checked out a copy of Caddy and created a few additional directories and files
 ```
 
 The Caddyfile that I used is in ./example/Caddyfile.  I made self signed
-certificates and put them into ./key.
+certificates and put them into ./key.  
 
 Then modify ./config/directives.go
 
@@ -133,8 +133,22 @@ Example call using jQuery
 
 ```
 
+
+## To generate certificates 
+
+To generate your own self signed certificates you can:
+
+``` base
+
+	$ openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout key.pem -out cert.pem
+	$ mv *.pem ./key
+
+```
+
 ## Author
 
 Philip Schlump
+
+[Website](http://www.2c-why.com/ "2C Why LLC")
 
 
