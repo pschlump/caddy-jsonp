@@ -1,3 +1,8 @@
+//
+// Copyright (C) Philip Schlump, 2015
+// License LICENSE.apache.txt or LICENSE.mit.txt
+//
+
 package bufferhtml
 
 import (

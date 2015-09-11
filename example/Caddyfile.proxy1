@@ -1,0 +1,11 @@
+http://localhost:2022 {
+	redir https://localhost:2023  code 307
+}
+
+https://localhost:2023 {
+	tls ./key/cert.pem ./key/key.pem
+	log ./log/access.log
+	root ./www
+	jsonp /status.json
+	proxy /api/test1	http://localhost:8089/
+}

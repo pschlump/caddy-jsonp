@@ -2,7 +2,8 @@
 //
 // Some documentation on this in ../../middleware/jsonp/README.md
 //
-// By Philip Schlump
+// Copyright (C) Philip Schlump, 2015
+// License LICENSE.apache.txt or LICENSE.mit.txt
 //
 
 package jsonp

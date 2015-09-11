@@ -1,8 +1,12 @@
 package setup
 
+//
 // Tests that the parsing works correctly and you get back resonable values
-// Modified by Philip Schlump from ./internal_test.go
 // Some documentation on this in ../../middleware/jsonp/README.md
+//
+// Copyright (C) Philip Schlump, 2015
+// License LICENSE.apache.txt or LICENSE.mit.txt
+//
 
 import (
 	"testing"
