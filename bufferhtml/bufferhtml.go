@@ -45,7 +45,6 @@ func (b *BufferHTML) WriteHeader(StatusCode int) {
 func (b *BufferHTML) FlushAtEnd(w http.ResponseWriter, Prefix string, Postfix string) (n int, err error) {
 	h := w.Header()
 	s := b.Bytes()
-	l := len(s)
 	if len(b.Headers) > 0 {
 		for key, val := range b.Headers {
 			h[key] = val
@@ -53,14 +52,13 @@ func (b *BufferHTML) FlushAtEnd(w http.ResponseWriter, Prefix string, Postfix st
 	}
 	// ------------------------------------------- prefix / postfix --------------------------------
 	s = []byte(Prefix + string(s) + Postfix)
-	w.Header().Set("Content-Length", fmt.Sprintf("%d", len(s)))
-	fmt.Printf("Headers: %+v\n", h)
+	l := len(s)
+	w.Header().Set("Content-Length", fmt.Sprintf("%d", l))
 	if b.StatusCode > 0 {
 		w.WriteHeader(b.StatusCode)
 	} else {
 		w.WriteHeader(200)
 	}
-	fmt.Printf(">%s< %d\n", s, l)
 	n, err = w.Write(s)
 	return
 }

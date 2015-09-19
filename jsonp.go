@@ -6,20 +6,60 @@
 // License LICENSE.apache.txt or LICENSE.mit.txt
 //
 
+//
+// Directive
+// Parse and save the config into the "Paths"
+//
+// jsonp /some/url
+// jsonp /some/other-url
+//
+// Some documentation on this in ../../middleware/jsonp/README.md
+//
+// By Philip Schlump
+//
+
 package jsonp
 
 import (
 	"net/http"
 	"net/url"
 
+	"github.com/mholt/caddy/config/setup"
 	"github.com/mholt/caddy/middleware"
-	"github.com/mholt/caddy/middleware/jsonp/bufferhtml"
+	"github.com/pschlump/caddy-jsonp/bufferhtml"
 )
 
+// Jsonp configures a new Jsonp middleware instance.
+func Setup(c *setup.Controller) (middleware.Middleware, error) {
+	paths, err := jsonpParse(c)
+	if err != nil {
+		return nil, err
+	}
+
+	return func(next middleware.Handler) middleware.Handler {
+		return JsonPHandlerType{
+			Next:  next,
+			Paths: paths,
+		}
+	}, nil
+}
+
+func jsonpParse(c *setup.Controller) ([]string, error) {
+	var paths []string
+
+	for c.Next() {
+		if !c.NextArg() {
+			return paths, c.ArgErr()
+		}
+		paths = append(paths, c.Val())
+	}
+
+	return paths, nil
+}
+
 type JsonPHandlerType struct {
-	Paths                []string
-	Next                 middleware.Handler
-	ResponseBodyRecorder *bufferhtml.BufferHTML
+	Paths []string
+	Next  middleware.Handler
 }
 
 func (jph JsonPHandlerType) ServeHTTP(www http.ResponseWriter, req *http.Request) (int, error) {
@@ -33,12 +73,12 @@ func (jph JsonPHandlerType) ServeHTTP(www http.ResponseWriter, req *http.Request
 				Postfix := ""
 				u, err := url.ParseRequestURI(req.RequestURI)
 				if err != nil {
-					ResponseBodyRecorder.FlushAtEnd(www, "/*1*/", "")
+					ResponseBodyRecorder.FlushAtEnd(www, "", "")
 					return status, nil
 				}
 				m, err := url.ParseQuery(u.RawQuery)
 				if err != nil {
-					ResponseBodyRecorder.FlushAtEnd(www, "/*2*/", "")
+					ResponseBodyRecorder.FlushAtEnd(www, "", "")
 					return status, nil
 				}
 				callback := m.Get("callback")
@@ -49,7 +89,7 @@ func (jph JsonPHandlerType) ServeHTTP(www http.ResponseWriter, req *http.Request
 				}
 				ResponseBodyRecorder.FlushAtEnd(www, Prefix, Postfix)
 			} else {
-				ResponseBodyRecorder.FlushAtEnd(www, "/*3*/", "")
+				ResponseBodyRecorder.FlushAtEnd(www, "", "")
 			}
 			return status, err
 		}
