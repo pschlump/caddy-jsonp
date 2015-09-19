@@ -7,67 +7,6 @@ of building middleware for Caddy.
 proxy that supports middleware.  The middleware is somewhat different from the
 regular middleware in a Go webserver.
 
-The author of the software recommends the use of caddydev a tool for helping build
-middleware.  I was unable to get this to work (the tool is still under development
-at this time).  For that reason I have gone ahead with building this middleware
-without the additional tool.
-
-I checked out a copy of Caddy and created a few additional directories and files.
-
-``` bash
-
-	$ cd caddy
-	$ mkdir log key 
-
-```
-
-The Caddyfile that I used is in ./example/Caddyfile.  I made self signed
-certificates and put them into ./key.  
-
-Then modify ./config/directives.go
-
-``` Go
-
-var directiveOrder = []directive{
-	// Essential directives that initialize vital configuration settings
-	{"root", setup.Root},
-	{"tls", setup.TLS},
-	{"bind", setup.BindHost},
-
-	// Other directives that don't create HTTP handlers
-	{"startup", setup.Startup},
-	{"shutdown", setup.Shutdown},
-
-	// Directives that inject handlers (middleware)
-	{"log", setup.Log},
-	{"gzip", setup.Gzip},
-	{"jsonp", setup.Jsonp}, // Added this line
-	{"errors", setup.Errors},
-	{"header", setup.Headers},
-	{"rewrite", setup.Rewrite},
-	{"redir", setup.Redir},
-	{"ext", setup.Ext},
-	{"basicauth", setup.BasicAuth},
-	{"internal", setup.Internal},
-	{"proxy", setup.Proxy},
-	{"fastcgi", setup.FastCGI},
-	{"websocket", setup.WebSocket},
-	{"markdown", setup.Markdown},
-	{"templates", setup.Templates},
-	{"browse", setup.Browse},
-}
-
-```
-
-to have the extra line for the directive.  There is an useful comment
-in the fail right before this about order.
-
-Add in the ./config/setup/jsonp.go and ./config/setup/jsonp_test.go files 
-to the Caddy ./config/setup directory.  
-
-Add the ./middleware/jsonp and its subdirectory to the Caddy source.
-
-Test and compile.
 
 # Test
 
@@ -150,6 +89,6 @@ To generate your own self signed certificates you can:
 
 Philip Schlump
 
-[Website](http://www.2c-why.com/ "2C Why LLC")
+[Authors Website, 2C Why, LLC](http://www.2c-why.com/ "2C Why LLC")
 
 
