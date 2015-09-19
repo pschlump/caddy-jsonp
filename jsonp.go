@@ -1,21 +1,14 @@
 // Package jsonp impements JSONp middleware
 //
-// Some documentation on this in ../../middleware/jsonp/README.md
-//
 // Copyright (C) Philip Schlump, 2015
 // License LICENSE.apache.txt or LICENSE.mit.txt
 //
 
 //
 // Directive
-// Parse and save the config into the "Paths"
 //
 // jsonp /some/url
 // jsonp /some/other-url
-//
-// Some documentation on this in ../../middleware/jsonp/README.md
-//
-// By Philip Schlump
 //
 
 package jsonp
