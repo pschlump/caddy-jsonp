@@ -29,6 +29,8 @@ func Setup(c *setup.Controller) (middleware.Middleware, error) {
 		return nil, err
 	}
 
+	// fmt.Printf("Setup called, paths=%s\n", paths)
+
 	return func(next middleware.Handler) middleware.Handler {
 		return JsonPHandlerType{
 			Next:  next,
@@ -39,6 +41,8 @@ func Setup(c *setup.Controller) (middleware.Middleware, error) {
 
 func jsonpParse(c *setup.Controller) ([]string, error) {
 	var paths []string
+
+	// fmt.Printf("jsonpParse called\n")
 
 	for c.Next() {
 		if !c.NextArg() {
@@ -56,11 +60,14 @@ type JsonPHandlerType struct {
 }
 
 func (jph JsonPHandlerType) ServeHTTP(www http.ResponseWriter, req *http.Request) (int, error) {
+
+	// fmt.Printf("JsonPHandlerType.ServeHTTP called\n")
+
 	for _, prefix := range jph.Paths {
 		if middleware.Path(req.URL.Path).Matches(prefix) {
 			ResponseBodyRecorder := bufferhtml.NewBufferHTML()
 			status, err := jph.Next.ServeHTTP(ResponseBodyRecorder, req)
-			if status == 200 {
+			if status == 200 || status == 0 {
 				// if there is a "callback" argument then use that to format the JSONp response.
 				Prefix := ""
 				Postfix := ""
