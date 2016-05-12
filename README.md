@@ -1,5 +1,7 @@
 # caddy-jsonp -- A JSONP Implementation for the Caddy Webserver in Go (GoLang)
 
+ [![license](http://img.shields.io/badge/license-MIT-red.svg?style=flat)](https://raw.githubusercontent.com/pschlump/Go-FTL/master/LICENSE)
+
 This is both an implementation of JSONP for Caddy and a description of the process
 of building middleware for Caddy.
 
