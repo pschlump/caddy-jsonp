@@ -19,15 +19,23 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/mholt/caddy/caddy/setup" // Old: version 0.7.6 "github.com/mholt/caddy/config/setup"
-	"github.com/mholt/caddy/middleware"  //  Old: version 0.7.6 "github.com/mholt/caddy/middleware"
+	"github.com/mholt/caddy"
+	"github.com/mholt/caddy/caddyhttp/httpserver"
 	"github.com/pschlump/caddy-jsonp/bufferhtml"
 )
 
 const db1 = false
 
-// Jsonp configures a new Jsonp middleware instance.
-func Setup(c *setup.Controller) (middleware.Middleware, error) {
+func init() {
+	caddy.RegisterPlugin("jsonp", caddy.Plugin{
+		ServerType: "http",
+		Action:     Setup,
+	})
+}
+
+
+// Setup configures a new Jsonp middleware instance.
+func Setup(c *caddy.Controller) error {
 	paths, err := jsonpParse(c)
 	if err != nil {
 		return nil, err
@@ -37,15 +45,17 @@ func Setup(c *setup.Controller) (middleware.Middleware, error) {
 		fmt.Printf("Setup called, paths=%s\n", paths)
 	}
 
-	return func(next middleware.Handler) middleware.Handler {
+	httpserver.GetConfig(c).AddMiddleware(func(next httpserver.Handler) httpserver.Handler {
 		return JsonPHandlerType{
 			Next:  next,
 			Paths: paths,
 		}
-	}, nil
+	})
+	
+	return nil
 }
 
-func jsonpParse(c *setup.Controller) ([]string, error) {
+func jsonpParse(c *caddy.Controller) ([]string, error) {
 	var paths []string
 
 	if db1 {
@@ -64,7 +74,7 @@ func jsonpParse(c *setup.Controller) ([]string, error) {
 
 type JsonPHandlerType struct {
 	Paths []string
-	Next  middleware.Handler
+	Next  httpserver.Handler
 }
 
 func (jph JsonPHandlerType) ServeHTTP(www http.ResponseWriter, req *http.Request) (int, error) {
