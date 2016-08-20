@@ -28,6 +28,9 @@ import (
 const db1 = false // back to debuging this
 
 func init() {
+	if db1 {
+		fmt.Printf("jsonp - Calling caddy.RegisterPlugin\n")
+	}
 	caddy.RegisterPlugin("jsonp", caddy.Plugin{
 		ServerType: "http",
 		Action:     Setup,

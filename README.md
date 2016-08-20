@@ -3,7 +3,9 @@
  [![license](http://img.shields.io/badge/license-MIT-red.svg?style=flat)](https://raw.githubusercontent.com/pschlump/Go-FTL/master/LICENSE)
 
 This is both an implementation of JSONP for Caddy and a description of the process
-of building middleware for Caddy.
+of building middleware for Caddy.  (Please note the code has been updated for the 0.9
+version of Caddy - but the documentation in this file may be out of date.  I will
+get to it tomorrow morning.)
 
 [Caddy](https://github.com/mholt/caddy "Caddy Web Server") is a fast web server and
 proxy that supports middleware.  The middleware is somewhat different from the
