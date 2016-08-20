@@ -14,8 +14,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/mholt/caddy-old1/middleware"
 	// "github.com/mholt/caddy-old1/middleware"
+	"github.com/mholt/caddy/caddyhttp/httpserver"
 )
 
 const db_test = false
@@ -44,11 +44,7 @@ func TestIPFilter(t *testing.T) {
 	for _, tc := range TestCases {
 
 		aaa := JsonPHandlerType{
-			Next: middleware.HandlerFunc(func(w http.ResponseWriter, r *http.Request) (int, error) {
-				// w.Write([]byte(`{"ok":123}`))
-				w.Write([]byte(tc.input))
-				return http.StatusOK, nil
-			}),
+			Next:  nextFunc(tc.input),
 			Paths: tc.paths,
 		}
 
@@ -77,4 +73,13 @@ func TestIPFilter(t *testing.T) {
 			t.Fatalf("Expected Body: '%s', Got: '%s' TestCase: %+v\n", tc.expectedBody, rec.Body.String(), tc)
 		}
 	}
+}
+
+func nextFunc(ss string) httpserver.Handler {
+	return httpserver.HandlerFunc(func(w http.ResponseWriter, r *http.Request) (int, error) {
+		if _, err := w.Write([]byte(ss)); err != nil {
+			return 500, err
+		}
+		return 200, nil
+	})
 }
