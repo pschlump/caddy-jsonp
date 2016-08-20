@@ -14,7 +14,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/mholt/caddy/middleware"
+	"github.com/mholt/caddy-old1/middleware"
+	// "github.com/mholt/caddy-old1/middleware"
 )
 
 const db_test = false

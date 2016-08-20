@@ -20,11 +20,12 @@ import (
 	"net/url"
 
 	"github.com/mholt/caddy"
+	"github.com/mholt/caddy-old1/middleware"
 	"github.com/mholt/caddy/caddyhttp/httpserver"
 	"github.com/pschlump/caddy-jsonp/bufferhtml"
 )
 
-const db1 = false
+const db1 = false // back to debuging this
 
 func init() {
 	caddy.RegisterPlugin("jsonp", caddy.Plugin{
@@ -33,12 +34,11 @@ func init() {
 	})
 }
 
-
 // Setup configures a new Jsonp middleware instance.
 func Setup(c *caddy.Controller) error {
 	paths, err := jsonpParse(c)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	if db1 {
@@ -51,7 +51,7 @@ func Setup(c *caddy.Controller) error {
 			Paths: paths,
 		}
 	})
-	
+
 	return nil
 }
 
@@ -100,12 +100,9 @@ func (jph JsonPHandlerType) ServeHTTP(www http.ResponseWriter, req *http.Request
 				fmt.Printf("C status=%d err=%s\n", status, err)
 			}
 			if status == 200 || status == 0 {
-				if db1 {
-					fmt.Printf("D\n")
-				}
 				// if there is a "callback" argument then use that to format the JSONp response.
 				if db1 {
-					fmt.Printf("Inside, status=%d\n", status)
+					fmt.Printf("D Inside, status=%d\n", status)
 				}
 				Prefix := ""
 				Postfix := ""
@@ -131,9 +128,8 @@ func (jph JsonPHandlerType) ServeHTTP(www http.ResponseWriter, req *http.Request
 				ResponseBodyRecorder.FlushAtEnd(www, Prefix, Postfix)
 			} else {
 				if db1 {
-					fmt.Printf("E - error occured\n")
+					fmt.Printf("E - error occured, %s\n", err)
 				}
-				// ResponseBodyRecorder.FlushAtEnd(www, "", "")
 				log.Printf("Error (%s) status %d - from JSONP directive\n", err, status)
 			}
 			return status, err
@@ -141,3 +137,5 @@ func (jph JsonPHandlerType) ServeHTTP(www http.ResponseWriter, req *http.Request
 	}
 	return jph.Next.ServeHTTP(www, req)
 }
+
+/* vim: set noai ts=4 sw=4: */
