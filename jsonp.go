@@ -1,4 +1,4 @@
-// Package jsonp impements JSONp middleware
+// Package jsonp impements JSONp
 //
 // Copyright (C) Philip Schlump, 2015
 // License LICENSE.apache.txt or LICENSE.mit.txt

@@ -2,7 +2,6 @@ package jsonp
 
 //
 // Tests that the parsing works correctly and you get back resonable values
-// Some documentation on this in ../../middleware/jsonp/README.md
 //
 // Copyright (C) Philip Schlump, 2015
 // License LICENSE.apache.txt or LICENSE.mit.txt
@@ -14,7 +13,6 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	// "github.com/mholt/caddy-old1/middleware"
 	"github.com/mholt/caddy/caddyhttp/httpserver"
 )
 
