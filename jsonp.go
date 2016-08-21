@@ -20,7 +20,6 @@ import (
 	"net/url"
 
 	"github.com/mholt/caddy"
-	"github.com/mholt/caddy-old1/middleware"
 	"github.com/mholt/caddy/caddyhttp/httpserver"
 	"github.com/pschlump/caddy-jsonp/bufferhtml"
 )
@@ -90,7 +89,7 @@ func (jph JsonPHandlerType) ServeHTTP(www http.ResponseWriter, req *http.Request
 		if db1 {
 			fmt.Printf("Path Matches\n")
 		}
-		if middleware.Path(req.URL.Path).Matches(prefix) {
+		if httpserver.Path(req.URL.Path).Matches(prefix) {
 			if db1 {
 				fmt.Printf("A\n")
 			}
