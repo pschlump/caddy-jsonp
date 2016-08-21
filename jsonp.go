@@ -5,7 +5,7 @@
 //
 
 //
-// Directive
+// Directive for Caddy
 //
 // jsonp /some/url
 // jsonp /some/other-url
